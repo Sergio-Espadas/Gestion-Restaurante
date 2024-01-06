@@ -46,3 +46,11 @@ class restaurant {
     }
 }
 
+
+// Son coordenadas para localizar una ubicación.
+class coordinate {
+    constructor(latitude, longitude) {
+        this.latitude = latitude;
+        this.ongitude = longitude;
+    }
+}

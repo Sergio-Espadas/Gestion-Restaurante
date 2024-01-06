@@ -17,3 +17,12 @@ class category {
         this.description = description;
     }
 }
+
+
+// Representa los alérgenos que pueden tener un determinado plato
+class allergen {
+    constructor(name, description = "") {
+        this.name = name;
+        this.description = description;
+    }
+}

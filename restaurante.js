@@ -35,3 +35,14 @@ class menu {
         this.description = description;
     }
 }
+
+
+// Representa un recurso restaurante para formar parte de la cadena de restaurantes a gestionar 
+class restaurant {
+    constructor(name, description = "", location = "") {
+        this.name = name;
+        this.description = description;
+        this.location = location
+    }
+}
+

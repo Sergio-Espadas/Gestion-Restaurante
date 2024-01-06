@@ -26,3 +26,12 @@ class allergen {
         this.description = description;
     }
 }
+
+
+// Se trata de una agregación de platos
+class menu {
+    constructor(name, description = "") {
+        this.name = name;
+        this.description = description;
+    }
+}

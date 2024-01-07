@@ -7,6 +7,27 @@ class dish {
         this.ingredients = ingredients;
         this.image = image;
     }
+
+    get getName() {
+        return this.name;
+    }
+
+    get getDescription() {
+        return this.description;
+    }
+
+    get getIngredients() {
+        return this.ingredients;
+    }
+
+    get getImage() {
+        return this.image;
+    }
+
+    toString() {
+        return "Name: " + this.name + "\n" + "Description: " + this.description + "\n" +
+            "Ingredients: " + this.ingredients + "\n" + "Image: " + this.image;
+    }
 }
 
 
@@ -15,6 +36,18 @@ class category {
     constructor(name, description = "") {
         this.name = name;
         this.description = description;
+    }
+
+    get getName() {
+        return this.name;
+    }
+
+    get getDescription() {
+        return this.description;
+    }
+
+    toString() {
+        return "Name: " + this.name + "\n" + "Description: " + this.description;
     }
 }
 
@@ -25,6 +58,18 @@ class allergen {
         this.name = name;
         this.description = description;
     }
+
+    get getName() {
+        return this.name;
+    }
+
+    get getDescription() {
+        return this.description;
+    }
+
+    toString() {
+        return "Name: " + this.name + "\n" + "Description: " + this.description;
+    }
 }
 
 
@@ -33,6 +78,18 @@ class menu {
     constructor(name, description = "") {
         this.name = name;
         this.description = description;
+    }
+
+    get getName() {
+        return this.name;
+    }
+
+    get getDescription() {
+        return this.description;
+    }
+
+    toString() {
+        return "Name: " + this.name + "\n" + "Description: " + this.description;
     }
 }
 
@@ -44,6 +101,22 @@ class restaurant {
         this.description = description;
         this.location = location
     }
+
+    get getName() {
+        return this.name;
+    }
+
+    get getDescription() {
+        return this.description;
+    }
+
+    get getLocation() {
+        return this.location;
+    }
+
+    toString() {
+        return "Name: " + this.name + "\n" + "Description: " + this.description + "\n" + "Location: " + this.location;
+    }
 }
 
 
@@ -51,6 +124,18 @@ class restaurant {
 class coordinate {
     constructor(latitude, longitude) {
         this.latitude = latitude;
-        this.ongitude = longitude;
+        this.longitude = longitude;
+    }
+
+    get getLatitude() {
+        return this.latitude;
+    }
+
+    get getLongitude() {
+        return this.longitude;
+    }
+
+    toString() {
+        return "Latitud: " + this.latitude + "\n" + "Longitud: " + this.longitude;
     }
 }

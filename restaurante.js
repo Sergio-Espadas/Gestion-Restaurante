@@ -280,288 +280,434 @@ class Coordinate {
 
 
 // Objeto RestaurantsManager (Singleton)
-class RestaurantsManager {
-    constructor() {
-        // Aseguramos que solo haya una instancia
-        if (!RestaurantsManager.instance) {
-            this.systemName = "Nombre del Sistema";
-            this.categories = new Set();
-            this.menus = new Set();
-            this.allergens = new Set();
-            this.restaurants = new Set();
+let RestaurantsManager = (function () {
+    let instantiated;
 
-            RestaurantsManager.instance = this;
+    class RestaurantsManager {
+
+        #systemName = "Nombre del Sistema";
+        #categories = [];
+        #allergens = [];
+        #dishes = [];
+        #menus = [];
+        #restaurants = [];
+
+        constructor() {
+
         }
 
-        return RestaurantsManager.instance;
-    }
+        // Getter para obtener un iterador de categorías
+        getCategories() {
+            let categoryIterator = this.#categories.values();
+
+            return {
+                next: function () {
+                    return categoryIterator.next();
+                }
+            };
+        }
 
 
-    // Getter para obtener un iterador de categorías
-    getCategories() {
-        let categoryIterator = this.categories.values();
+        // Getter para obtener un iterador de menús
+        getMenus() {
+            let menuIterator = this.#menus.values();
 
-        return {
-            next: function () {
-                return categoryIterator.next();
+            return {
+                next: function () {
+                    return menuIterator.next();
+                }
+            };
+        }
+
+
+        // Getter para obtener un iterador de alérgenos
+        getAllergens() {
+            let allergenIterator = this.#allergens.values();
+
+            return {
+                next: function () {
+                    return allergenIterator.next();
+                }
+            };
+        }
+
+
+        // Getter para obtener un iterador de restaurantes
+        getRestaurants() {
+            let restaurantIterator = this.#restaurants.values();
+
+            return {
+                next: function () {
+                    return restaurantIterator.next();
+                }
+            };
+        }
+
+
+        // Método para añadir una nueva categoría
+        addCategory(newCategory) {
+            // Verificar si newCategory es una instancia de la clase Category
+            if (!(newCategory instanceof Category)) {
+                throw new Error("La categoría no es un objeto Category.");
             }
-        };
-    }
 
-
-    // Getter para obtener un iterador de menús
-    getMenus() {
-        let menuIterator = this.menus.values();
-
-        return {
-            next: function () {
-                return menuIterator.next();
+            // Verificar si la categoría ya existe
+            if (this.categories.has(newCategory)) {
+                throw new Error("La categoría ya existe.");
             }
-        };
-    }
+
+            // Añadir la nueva categoría
+            this.categories.add(newCategory);
+
+            // Permitir encadenar llamadas
+            return this;
+        }
 
 
-    // Getter para obtener un iterador de alérgenos
-    getAllergens() {
-        let allergenIterator = this.allergens.values();
-
-        return {
-            next: function () {
-                return allergenIterator.next();
+        // Método para eliminar una categoría
+        removeCategory(categoryToRemove) {
+            // Verificar si categoryToRemove es una instancia de la clase Category
+            if (!(categoryToRemove instanceof Category)) {
+                throw new Error("La categoría no es un objeto Category.");
             }
-        };
-    }
 
-
-    // Getter para obtener un iterador de restaurantes
-    getRestaurants() {
-        let restaurantIterator = this.restaurants.values();
-
-        return {
-            next: function () {
-                return restaurantIterator.next();
+            // Verificar si la categoría está registrada
+            if (!this.categories.has(categoryToRemove)) {
+                throw new Error("La categoría no está registrada.");
             }
-        };
+
+            // Desasignar platos de la categoría antes de eliminarla
+            this.dishes.forEach(dish => {
+                dish.categories.delete(categoryToRemove);
+            });
+
+            // Eliminar la categoría del sistema
+            this.categories.delete(categoryToRemove);
+
+            // Permitir encadenar llamadas
+            return this;
+        }
+
+
+        // Método para añadir un menú
+        addMenu(menuToAdd) {
+            // Verificar si menuToAdd es una instancia de la clase Menu
+            if (!(menuToAdd instanceof Menu)) {
+                throw new Error("El menú no es un objeto Menu.");
+            }
+
+            // Verificar si el menú ya existe
+            if (this.menus.has(menuToAdd)) {
+                throw new Error("El menú ya existe.");
+            }
+
+            // Añadir el menú al sistema
+            this.menus.add(menuToAdd);
+
+            // Permitir encadenar llamadas
+            return this;
+        }
+
+
+        // Método para eliminar un menú
+        removeMenu(menuToRemove) {
+            // Verificar si menuToRemove es una instancia de la clase Menu
+            if (!(menuToRemove instanceof Menu)) {
+                throw new Error("El menú no es un objeto Menu.");
+            }
+
+            // Verificar si el menú está registrado
+            if (!this.menus.has(menuToRemove)) {
+                throw new Error("El menú no está registrado.");
+            }
+
+            // Eliminar el menú del sistema
+            this.menus.delete(menuToRemove);
+
+            // Permitir encadenar llamadas
+            return this;
+        }
+
+
+        // Método para añadir un alérgeno
+        addAllergen(allergenToAdd) {
+            // Verificar si allergenToAdd es una instancia de la clase Allergen
+            if (!(allergenToAdd instanceof Allergen)) {
+                throw new Error("El alérgeno no es un objeto Allergen.");
+            }
+
+            // Verificar si el alérgeno ya existe
+            if (this.allergens.has(allergenToAdd)) {
+                throw new Error("El alérgeno ya existe.");
+            }
+
+            // Añadir el alérgeno al sistema
+            this.allergens.add(allergenToAdd);
+
+            // Permitir encadenar llamadas
+            return this;
+        }
+
+
+        // Método para eliminar un alérgeno
+        removeAllergen(allergenToRemove) {
+            // Verificar si allergenToRemove es una instancia de la clase Allergen
+            if (!(allergenToRemove instanceof Allergen)) {
+                throw new Error("El alérgeno no es un objeto Allergen.");
+            }
+
+            // Verificar si el alérgeno está registrado
+            if (!this.allergens.has(allergenToRemove)) {
+                throw new Error("El alérgeno no está registrado.");
+            }
+
+            // Eliminar el alérgeno del sistema
+            this.allergens.delete(allergenToRemove);
+
+            // Permitir encadenar llamadas
+            return this;
+        }
+
+
+        // Método para añadir un plato
+        addDish(dishToAdd) {
+            // Verificar si dishToAdd es una instancia de la clase Dish
+            if (!(dishToAdd instanceof Dish)) {
+                throw new Error("El plato no es un objeto Dish.");
+            }
+
+            // Verificar si el plato ya existe
+            if (this.dishes.has(dishToAdd)) {
+                throw new Error("El plato ya existe.");
+            }
+
+            // Añadir el plato al sistema
+            this.dishes.add(dishToAdd);
+
+            // Permitir encadenar llamadas
+            return this;
+        }
+
+
+        // Método para eliminar un plato
+        removeDish(dishToRemove) {
+            // Verificar si dishToRemove es una instancia de la clase Dish
+            if (!(dishToRemove instanceof Dish)) {
+                throw new Error("El plato no es un objeto Dish.");
+            }
+
+            // Verificar si el plato está registrado
+            if (!this.dishes.has(dishToRemove)) {
+                throw new Error("El plato no está registrado.");
+            }
+
+            // Eliminar el plato del sistema
+            this.dishes.delete(dishToRemove);
+
+            // Desasignar plato de categorías, alérgenos y menús
+            dishToRemove.categories.forEach(category => {
+                category.dishes.delete(dishToRemove);
+            });
+
+            dishToRemove.allergens.forEach(allergen => {
+                allergen.dishes.delete(dishToRemove);
+            });
+
+            dishToRemove.menus.forEach(menu => {
+                menu.dishes.delete(dishToRemove);
+            });
+
+            // Permitir encadenar llamadas
+            return this;
+        }
+
+
+        // Método para añadir un restaurante
+        addRestaurant(restaurantToAdd) {
+            // Verificar si restaurantToAdd es una instancia de la clase Restaurant
+            if (!(restaurantToAdd instanceof Restaurant)) {
+                throw new Error("El restaurante no es un objeto Restaurant.");
+            }
+
+            // Verificar si el restaurante ya existe
+            if (this.restaurants.has(restaurantToAdd)) {
+                throw new Error("El restaurante ya existe.");
+            }
+
+            // Añadir el restaurante al sistema
+            this.restaurants.add(restaurantToAdd);
+
+            // Permitir encadenar llamadas
+            return this;
+        }
+
+
+        // Método para eliminar un restaurante
+        removeRestaurant(restaurantToRemove) {
+            // Verificar si restaurantToRemove es una instancia de la clase Restaurant
+            if (!(restaurantToRemove instanceof Restaurant)) {
+                throw new Error("El restaurante no es un objeto Restaurant.");
+            }
+
+            // Verificar si el restaurante está registrado
+            if (!this.restaurants.has(restaurantToRemove)) {
+                throw new Error("El restaurante no está registrado.");
+            }
+
+            // Eliminar el restaurante del sistema
+            this.restaurants.delete(restaurantToRemove);
+
+            // Permitir encadenar llamadas
+            return this;
+        }
     }
 
 
-    // Método para añadir una nueva categoría
-    addCategory(newCategory) {
-        // Verificar si newCategory es una instancia de la clase Category
-        if (!(newCategory instanceof Category)) {
-            throw new Error("La categoría no es un objeto Category.");
-        }
+    function init() {
+        let rManager = new RestaurantsManager();
+        Object.freeze(rManager);
+        return rManager;
+    }
 
-        // Verificar si la categoría ya existe
-        if (this.categories.has(newCategory)) {
-            throw new Error("La categoría ya existe.");
-        }
+    return {
+        getInstance() {
+            if (!instantiated) {
+                instantiated = init();
+            }
+            return instantiated;
+        },
+    };
+}());
 
-        // Añadir la nueva categoría
-        this.categories.add(newCategory);
 
-        // Permitir encadenar llamadas
-        return this;
+// Funciones de testeo
+function testTask() {
+
+    // Probamos el singelton para ver que son la misma instancia
+    let restaurantSergio = RestaurantsManager.getInstance();
+    let restaurantArturo = RestaurantsManager.getInstance();
+
+    console.log(restaurantSergio === restaurantArturo);
+
+    // Crear un objeto de la clase Dish
+    let spaghetti = new Dish("Spaghetti", "Spaghetti con tomate",
+        ["Spaghetti", "Tomate"],
+        "URL_Spaghetti_Con_Tomate");
+
+    // Crear un objeto de la clase Category
+    let categoria = new Category("Pasta", "Platos Tipicos");
+
+    // Crear un objeto de la clase Allergen
+    let alergeno = new Allergen("Gluten", "La pasta contiene gluten");
+
+    // Crear un objeto de la clase Menu
+    let menu = new Menu("Menu del Día", "Menu diario del restaurante");
+
+    // Crear un objeto de la clase Restaurant
+    let restaurante = new Restaurant("La cocina de Sergio", "Restaurante tradicional", "Avenida de los Reyes 46");
+
+    // Crear un objeto de la clase Coordinate
+    let coordenada = new Coordinate(40.7128, -74.0060);
+
+
+    // Añadimos una categoría
+    try {
+        // Intentar añadir una nueva categoría
+        restaurantManager.addCategory(newCategory);
+    } catch (error) {
+        // Capturar y manejar la excepción
+        console.error("Error al añadir la categoría: " + error.message);
     }
 
 
-    // Método para eliminar una categoría
-    removeCategory(categoryToRemove) {
-        // Verificar si categoryToRemove es una instancia de la clase Category
-        if (!(categoryToRemove instanceof Category)) {
-            throw new Error("La categoría no es un objeto Category.");
-        }
-
-        // Verificar si la categoría está registrada
-        if (!this.categories.has(categoryToRemove)) {
-            throw new Error("La categoría no está registrada.");
-        }
-
-        // Desasignar platos de la categoría antes de eliminarla
-        this.dishes.forEach(dish => {
-            dish.categories.delete(categoryToRemove);
-        });
-
-        // Eliminar la categoría del sistema
-        this.categories.delete(categoryToRemove);
-
-        // Permitir encadenar llamadas
-        return this;
+    // Eliminamos la categoria 
+    try {
+        // Intentar eliminar una categoría
+        restaurantManager.removeCategory(categoryToRemove);
+    } catch (error) {
+        // Capturar y manejar la excepción
+        console.error("Error al eliminar la categoría: " + error.message);
     }
 
 
-    // Método para añadir un menú
-    addMenu(menuToAdd) {
-        // Verificar si menuToAdd es una instancia de la clase Menu
-        if (!(menuToAdd instanceof Menu)) {
-            throw new Error("El menú no es un objeto Menu.");
-        }
-
-        // Verificar si el menú ya existe
-        if (this.menus.has(menuToAdd)) {
-            throw new Error("El menú ya existe.");
-        }
-
-        // Añadir el menú al sistema
-        this.menus.add(menuToAdd);
-
-        // Permitir encadenar llamadas
-        return this;
+    // Añadimos un menu
+    try {
+        // Intentar añadir un menú
+        restaurantManager.addMenu(menuToAdd);
+    } catch (error) {
+        // Capturar y manejar la excepción
+        console.error("Error al añadir el menú: " + error.message);
     }
 
 
-    // Método para eliminar un menú
-    removeMenu(menuToRemove) {
-        // Verificar si menuToRemove es una instancia de la clase Menu
-        if (!(menuToRemove instanceof Menu)) {
-            throw new Error("El menú no es un objeto Menu.");
-        }
-
-        // Verificar si el menú está registrado
-        if (!this.menus.has(menuToRemove)) {
-            throw new Error("El menú no está registrado.");
-        }
-
-        // Eliminar el menú del sistema
-        this.menus.delete(menuToRemove);
-
-        // Permitir encadenar llamadas
-        return this;
+    // Eliminamos un menu
+    try {
+        // Intentar eliminar un menú
+        restaurantManager.removeMenu(menuToRemove);
+    } catch (error) {
+        // Capturar y manejar la excepción
+        console.error("Error al eliminar el menú: " + error.message);
     }
 
 
-    // Método para añadir un alérgeno
-    addAllergen(allergenToAdd) {
-        // Verificar si allergenToAdd es una instancia de la clase Allergen
-        if (!(allergenToAdd instanceof Allergen)) {
-            throw new Error("El alérgeno no es un objeto Allergen.");
-        }
-
-        // Verificar si el alérgeno ya existe
-        if (this.allergens.has(allergenToAdd)) {
-            throw new Error("El alérgeno ya existe.");
-        }
-
-        // Añadir el alérgeno al sistema
-        this.allergens.add(allergenToAdd);
-
-        // Permitir encadenar llamadas
-        return this;
+    // Añadimos alergenos
+    try {
+        // Intentar añadir un alérgeno
+        restaurantManager.addAllergen(allergenToAdd);
+    } catch (error) {
+        // Capturar y manejar la excepción
+        console.error("Error al añadir el alérgeno: " + error.message);
     }
 
 
-    // Método para eliminar un alérgeno
-    removeAllergen(allergenToRemove) {
-        // Verificar si allergenToRemove es una instancia de la clase Allergen
-        if (!(allergenToRemove instanceof Allergen)) {
-            throw new Error("El alérgeno no es un objeto Allergen.");
-        }
-
-        // Verificar si el alérgeno está registrado
-        if (!this.allergens.has(allergenToRemove)) {
-            throw new Error("El alérgeno no está registrado.");
-        }
-
-        // Eliminar el alérgeno del sistema
-        this.allergens.delete(allergenToRemove);
-
-        // Permitir encadenar llamadas
-        return this;
+    // Eliminamos alergenos
+    try {
+        // Intentar eliminar un alérgeno
+        restaurantManager.removeAllergen(allergenToRemove);
+    } catch (error) {
+        // Capturar y manejar la excepción
+        console.error("Error al eliminar el alérgeno: " + error.message);
     }
 
 
-    // Método para añadir un plato
-    addDish(dishToAdd) {
-        // Verificar si dishToAdd es una instancia de la clase Dish
-        if (!(dishToAdd instanceof Dish)) {
-            throw new Error("El plato no es un objeto Dish.");
-        }
-
-        // Verificar si el plato ya existe
-        if (this.dishes.has(dishToAdd)) {
-            throw new Error("El plato ya existe.");
-        }
-
-        // Añadir el plato al sistema
-        this.dishes.add(dishToAdd);
-
-        // Permitir encadenar llamadas
-        return this;
+    // Añadimos un plato
+    try {
+        // Intentar añadir un plato
+        restaurantManager.addDish(dishToAdd);
+    } catch (error) {
+        // Capturar y manejar la excepción
+        console.error("Error al añadir el plato: " + error.message);
     }
 
 
-    // Método para eliminar un plato
-    removeDish(dishToRemove) {
-        // Verificar si dishToRemove es una instancia de la clase Dish
-        if (!(dishToRemove instanceof Dish)) {
-            throw new Error("El plato no es un objeto Dish.");
-        }
-
-        // Verificar si el plato está registrado
-        if (!this.dishes.has(dishToRemove)) {
-            throw new Error("El plato no está registrado.");
-        }
-
-        // Eliminar el plato del sistema
-        this.dishes.delete(dishToRemove);
-
-        // Desasignar plato de categorías, alérgenos y menús
-        dishToRemove.categories.forEach(category => {
-            category.dishes.delete(dishToRemove);
-        });
-
-        dishToRemove.allergens.forEach(allergen => {
-            allergen.dishes.delete(dishToRemove);
-        });
-
-        dishToRemove.menus.forEach(menu => {
-            menu.dishes.delete(dishToRemove);
-        });
-
-        // Permitir encadenar llamadas
-        return this;
+    // Eliminamos un plato
+    try {
+        // Intentar eliminar un plato
+        restaurantManager.removeDish(dishToRemove);
+    } catch (error) {
+        // Capturar y manejar la excepción
+        console.error("Error al eliminar el plato: " + error.message);
     }
 
 
-    // Método para añadir un restaurante
-    addRestaurant(restaurantToAdd) {
-        // Verificar si restaurantToAdd es una instancia de la clase Restaurant
-        if (!(restaurantToAdd instanceof Restaurant)) {
-            throw new Error("El restaurante no es un objeto Restaurant.");
-        }
-
-        // Verificar si el restaurante ya existe
-        if (this.restaurants.has(restaurantToAdd)) {
-            throw new Error("El restaurante ya existe.");
-        }
-
-        // Añadir el restaurante al sistema
-        this.restaurants.add(restaurantToAdd);
-
-        // Permitir encadenar llamadas
-        return this;
+    // Añadimos un restaurante
+    try {
+        // Intentar añadir un restaurante
+        restaurantManager.addRestaurant(restaurantToAdd);
+    } catch (error) {
+        // Capturar y manejar la excepción
+        console.error("Error al añadir el restaurante: " + error.message);
     }
 
 
-    // Método para eliminar un restaurante
-    removeRestaurant(restaurantToRemove) {
-        // Verificar si restaurantToRemove es una instancia de la clase Restaurant
-        if (!(restaurantToRemove instanceof Restaurant)) {
-            throw new Error("El restaurante no es un objeto Restaurant.");
-        }
-
-        // Verificar si el restaurante está registrado
-        if (!this.restaurants.has(restaurantToRemove)) {
-            throw new Error("El restaurante no está registrado.");
-        }
-
-        // Eliminar el restaurante del sistema
-        this.restaurants.delete(restaurantToRemove);
-
-        // Permitir encadenar llamadas
-        return this;
+    // Eliminamos restaurante
+    try {
+        // Intentar eliminar un restaurante
+        restaurantManager.removeRestaurant(restaurantToRemove);
+    } catch (error) {
+        // Capturar y manejar la excepción
+        console.error("Error al eliminar el restaurante: " + error.message);
     }
 }
 
-
-
+testTask();

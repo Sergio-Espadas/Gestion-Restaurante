@@ -1,22 +1,28 @@
 
 // Objeto para identifica los datos de un plato
 class Dish {
+
+    #name;
+    #description;
+    #ingredients;
+    #image;
+
     constructor(name, description = "", ingredients = [], image = "") {
-        this.name = name;
-        this.description = description;
-        this.ingredients = ingredients;
-        this.image = image;
+        this.#name = name;
+        this.#description = description;
+        this.#ingredients = ingredients;
+        this.#image = image;
 
 
         // Get y set de name
         Object.defineProperty(this, 'name', {
             enumerable: true,
             get() {
-                return this.name;
+                return this.#name;
             },
             set(value) {
                 if (!value) throw new EmptyValueException('name');
-                this.name = value;
+                this.#name = value;
             },
         });
 
@@ -25,11 +31,11 @@ class Dish {
         Object.defineProperty(this, 'description', {
             enumerable: true,
             get() {
-                return this.description;
+                return this.#description;
             },
             set(value) {
                 if (!value) throw new EmptyValueException('description');
-                this.description = value;
+                this.#description = value;
             },
         });
 
@@ -38,11 +44,11 @@ class Dish {
         Object.defineProperty(this, 'ingredients', {
             enumerable: true,
             get() {
-                return this.ingredients;
+                return this.#ingredients;
             },
             set(value) {
                 if (!value) throw new EmptyValueException('ingredients');
-                this.ingredients = value;
+                this.#ingredients = value;
             },
         });
 
@@ -51,38 +57,41 @@ class Dish {
         Object.defineProperty(this, 'image', {
             enumerable: true,
             get() {
-                return this.image;
+                return this.#image;
             },
             set(value) {
                 if (!value) throw new EmptyValueException('image');
-                this.image = value;
+                this.#image = value;
             },
         });
     }
 
     toString() {
-        return "Name: " + this.name + "\n" + "Description: " + this.description + "\n" +
-            "Ingredients: " + this.ingredients + "\n" + "Image: " + this.image;
+        return "Name: " + this.#name + "\n" + "Description: " + this.#description + "\n" +
+            "Ingredients: " + this.#ingredients + "\n" + "Image: " + this.#image;
     }
 }
 
 
 // Con este objeto podemos crear la estructura de categorías
 class Category {
-    constructor(name, description = "") {
-        this.name = name;
-        this.description = description;
+    #name;
+    #description;
 
+    constructor(name, description = " ") {
+
+        this.#name = name;
+        this.#description = description;
 
         // Get y set de name
         Object.defineProperty(this, 'name', {
             enumerable: true,
             get() {
-                return this.name;
+                return this.#name;
             },
             set(value) {
                 if (!value) throw new EmptyValueException('name');
-                this.name = value;
+                this.#name = value;
             },
         });
 
@@ -91,37 +100,41 @@ class Category {
         Object.defineProperty(this, 'description', {
             enumerable: true,
             get() {
-                return this.description;
+                return this.#description;
             },
             set(value) {
                 if (!value) throw new EmptyValueException('description');
-                this.description = value;
+                this.#description = value;
             },
         });
     }
 
     toString() {
-        return "Name: " + this.name + "\n" + "Description: " + this.description;
+        return "Name: " + this.#name + "\n" + "Description: " + this.#description;
     }
 }
 
 
 // Representa los alérgenos que pueden tener un determinado plato
 class Allergen {
-    constructor(name, description = "") {
-        this.name = name;
-        this.description = description;
+    #name;
+    #description;
+
+    constructor(name, description = " ") {
+
+        this.#name = name;
+        this.#description = description;
 
 
         // Get y set de name
         Object.defineProperty(this, 'name', {
             enumerable: true,
             get() {
-                return this.name;
+                return this.#name;
             },
             set(value) {
                 if (!value) throw new EmptyValueException('name');
-                this.name = value;
+                this.#name = value;
             },
         });
 
@@ -130,37 +143,41 @@ class Allergen {
         Object.defineProperty(this, 'description', {
             enumerable: true,
             get() {
-                return this.description;
+                return this.#description;
             },
             set(value) {
                 if (!value) throw new EmptyValueException('description');
-                this.description = value;
+                this.#description = value;
             },
         });
     }
 
     toString() {
-        return "Name: " + this.name + "\n" + "Description: " + this.description;
+        return "Name: " + this.#name + "\n" + "Description: " + this.#description;
     }
 }
 
 
 // Se trata de una agregación de platos
 class Menu {
-    constructor(name, description = "") {
-        this.name = name;
-        this.description = description;
+    #name;
+    #description;
+
+    constructor(name, description = " ") {
+
+        this.#name = name;
+        this.#description = description;
 
 
         // Get y set de name
         Object.defineProperty(this, 'name', {
             enumerable: true,
             get() {
-                return this.name;
+                return this.#name;
             },
             set(value) {
                 if (!value) throw new EmptyValueException('name');
-                this.name = value;
+                this.#name = value;
             },
         });
 
@@ -169,39 +186,44 @@ class Menu {
         Object.defineProperty(this, 'description', {
             enumerable: true,
             get() {
-                return this.description;
+                return this.#description;
             },
             set(value) {
                 if (!value) throw new EmptyValueException('description');
-                this.description = value;
+                this.#description = value;
             },
         });
     }
 
 
     toString() {
-        return "Name: " + this.name + "\n" + "Description: " + this.description;
+        return "Name: " + this.#name + "\n" + "Description: " + this.#description;
     }
 }
 
 
 // Representa un recurso restaurante para formar parte de la cadena de restaurantes a gestionar 
 class Restaurant {
+
+    #name;
+    #description;
+    #location;
+
     constructor(name, description = "", location = "") {
-        this.name = name;
-        this.description = description;
-        this.location = location
+        this.#name = name;
+        this.#description = description;
+        this.#location = location
 
 
         // Get y set de name
         Object.defineProperty(this, 'name', {
             enumerable: true,
             get() {
-                return this.name;
+                return this.#name;
             },
             set(value) {
                 if (!value) throw new EmptyValueException('name');
-                this.name = value;
+                this.#name = value;
             },
         });
 
@@ -210,11 +232,11 @@ class Restaurant {
         Object.defineProperty(this, 'description', {
             enumerable: true,
             get() {
-                return this.description;
+                return this.#description;
             },
             set(value) {
                 if (!value) throw new EmptyValueException('description');
-                this.description = value;
+                this.#description = value;
             },
         });
 
@@ -223,38 +245,42 @@ class Restaurant {
         Object.defineProperty(this, 'location', {
             enumerable: true,
             get() {
-                return this.location;
+                return this.#location;
             },
             set(value) {
                 if (!value) throw new EmptyValueException('location');
-                this.location = value;
+                this.#location = value;
             },
         });
     }
 
 
     toString() {
-        return "Name: " + this.name + "\n" + "Description: " + this.description + "\n" + "Location: " + this.location;
+        return "Name: " + this.#name + "\n" + "Description: " + this.#description + "\n" + "Location: " + this.#location;
     }
 }
 
 
 // Son coordenadas para localizar una ubicación.
 class Coordinate {
+
+    #latitude;
+    #longitude;
+
     constructor(latitude, longitude) {
-        this.latitude = latitude;
-        this.longitude = longitude;
+        this.#latitude = latitude;
+        this.#longitude = longitude;
 
 
         // Get y set de latitude
         Object.defineProperty(this, 'latitude', {
             enumerable: true,
             get() {
-                return this.latitude;
+                return this.#latitude;
             },
             set(value) {
                 if (!value) throw new EmptyValueException('latitude');
-                this.latitude = value;
+                this.#latitude = value;
             },
         });
 
@@ -263,18 +289,18 @@ class Coordinate {
         Object.defineProperty(this, 'longitude', {
             enumerable: true,
             get() {
-                return this.longitude;
+                return this.#longitude;
             },
             set(value) {
                 if (!value) throw new EmptyValueException('longitude');
-                this.longitude = value;
+                this.#longitude = value;
             },
         });
     }
 
 
     toString() {
-        return "Latitud: " + this.latitude + "\n" + "Longitud: " + this.longitude;
+        return "Latitud: " + this.#latitude + "\n" + "Longitud: " + this.#longitude;
     }
 }
 
@@ -292,9 +318,6 @@ let RestaurantsManager = (function () {
         #menus = [];
         #restaurants = [];
 
-        constructor() {
-
-        }
 
         // Getter para obtener un iterador de categorías
         getCategories() {
@@ -345,19 +368,21 @@ let RestaurantsManager = (function () {
 
 
         // Método para añadir una nueva categoría
-        addCategory(newCategory) {
-            // Verificar si newCategory es una instancia de la clase Category
-            if (!(newCategory instanceof Category)) {
-                throw new Error("La categoría no es un objeto Category.");
-            }
+        addCategory(...newCategory) {
+            for (const category of newCategory) {
+                // Verificar si newCategory es una instancia de la clase Category
+                if (!(category instanceof Category)) {
+                    throw new Error("La categoría no es un objeto Category.");
+                }
 
-            // Verificar si la categoría ya existe
-            if (this.categories.has(newCategory)) {
-                throw new Error("La categoría ya existe.");
-            }
+                // Verificar si la categoría ya existe
+                if (this.#categories.includes(category)) {
+                    throw new Error("La categoría ya existe.");
+                }
 
-            // Añadir la nueva categoría
-            this.categories.add(newCategory);
+                // Añadir la nueva categoría
+                this.#categories.push(category);
+            }
 
             // Permitir encadenar llamadas
             return this;
@@ -365,44 +390,56 @@ let RestaurantsManager = (function () {
 
 
         // Método para eliminar una categoría
-        removeCategory(categoryToRemove) {
-            // Verificar si categoryToRemove es una instancia de la clase Category
-            if (!(categoryToRemove instanceof Category)) {
-                throw new Error("La categoría no es un objeto Category.");
+        removeCategory(...categoriesToRemove) {
+            for (const category of categoriesToRemove) {
+                // Verificar si categoryToRemove es una instancia de la clase Category
+                if (!(category instanceof Category)) {
+                    throw new Error("La categoría no es un objeto Category.");
+                }
+
+
+                // Verificar si la categoría está registrada
+                // if (!this.#categories.includes(categoryToRemove)) {
+                //     throw new Error("La categoría no está registrada.");
+                // }
+
+
+                // Desasignar platos de la categoría antes de eliminarla
+                // this.#dishes.forEach(dish => {
+                //     dish.#categories.delete(categoryToRemove);
+                // });
+
+
+                let position = this.#categories.findIndex((elemento) => elemento.name === category.name);
+
+                console.log(position);
+
+                // Eliminar la categoría del sistema
+                this.#categories.splice(position, 1);
+
             }
-
-            // Verificar si la categoría está registrada
-            if (!this.categories.has(categoryToRemove)) {
-                throw new Error("La categoría no está registrada.");
-            }
-
-            // Desasignar platos de la categoría antes de eliminarla
-            this.dishes.forEach(dish => {
-                dish.categories.delete(categoryToRemove);
-            });
-
-            // Eliminar la categoría del sistema
-            this.categories.delete(categoryToRemove);
-
             // Permitir encadenar llamadas
             return this;
         }
 
 
         // Método para añadir un menú
-        addMenu(menuToAdd) {
-            // Verificar si menuToAdd es una instancia de la clase Menu
-            if (!(menuToAdd instanceof Menu)) {
-                throw new Error("El menú no es un objeto Menu.");
+        addMenu(...menuToAdd) {
+            for (const menu of menuToAdd) {
+                // Verificar si menuToAdd es una instancia de la clase Menu
+                if (!(menu instanceof Menu)) {
+                    throw new Error("El menú no es un objeto Menu.");
+                }
+
+                // Verificar si el menú ya existe
+                if (this.#menus.includes(menu)) {
+                    throw new Error("El menú ya existe.");
+                }
+
+                // Añadir el menú al sistema
+                this.#menus.push(menu);
             }
 
-            // Verificar si el menú ya existe
-            if (this.menus.has(menuToAdd)) {
-                throw new Error("El menú ya existe.");
-            }
-
-            // Añadir el menú al sistema
-            this.menus.add(menuToAdd);
 
             // Permitir encadenar llamadas
             return this;
@@ -410,19 +447,26 @@ let RestaurantsManager = (function () {
 
 
         // Método para eliminar un menú
-        removeMenu(menuToRemove) {
-            // Verificar si menuToRemove es una instancia de la clase Menu
-            if (!(menuToRemove instanceof Menu)) {
-                throw new Error("El menú no es un objeto Menu.");
-            }
+        removeMenu(...menuToRemove) {
+            for (const menu of menuToRemove) {
 
-            // Verificar si el menú está registrado
-            if (!this.menus.has(menuToRemove)) {
-                throw new Error("El menú no está registrado.");
-            }
+                // Verificar si menuToAdd es una instancia de la clase Menu
+                if (!(menu instanceof Menu)) {
+                    throw new Error("El menú no es un objeto Menu.");
+                }
 
-            // Eliminar el menú del sistema
-            this.menus.delete(menuToRemove);
+                // Verificar si el menú ya existe
+                // if (this.#menus.includes(menu)) {
+                //     throw new Error("El menú ya existe.");
+                // }
+
+                let position = this.#menus.findIndex((elemento) => elemento.name === menu.name);
+
+                console.log(position);
+
+                // Eliminar el menu del sistema
+                this.#categories.splice(position, 1);
+            }
 
             // Permitir encadenar llamadas
             return this;
@@ -430,39 +474,46 @@ let RestaurantsManager = (function () {
 
 
         // Método para añadir un alérgeno
-        addAllergen(allergenToAdd) {
-            // Verificar si allergenToAdd es una instancia de la clase Allergen
-            if (!(allergenToAdd instanceof Allergen)) {
-                throw new Error("El alérgeno no es un objeto Allergen.");
+        addAllergen(...allergenToAdd) {
+            for (const allergen of allergenToAdd) {
+                // Verificar si allergenToAdd es una instancia de la clase Allergen
+                if (!(allergen instanceof Allergen)) {
+                    throw new Error("El alérgeno no es un objeto Allergen.");
+                }
+
+                // Verificar si el alérgeno ya existe
+                // if (this.#allergens.includes(allergen)) {
+                //     throw new Error("El alérgeno ya existe.");
+                // }
+
+                // Añadir el alérgeno al sistema
+                this.#allergens.push(allergen);
             }
-
-            // Verificar si el alérgeno ya existe
-            if (this.allergens.has(allergenToAdd)) {
-                throw new Error("El alérgeno ya existe.");
-            }
-
-            // Añadir el alérgeno al sistema
-            this.allergens.add(allergenToAdd);
-
             // Permitir encadenar llamadas
             return this;
         }
 
 
         // Método para eliminar un alérgeno
-        removeAllergen(allergenToRemove) {
-            // Verificar si allergenToRemove es una instancia de la clase Allergen
-            if (!(allergenToRemove instanceof Allergen)) {
-                throw new Error("El alérgeno no es un objeto Allergen.");
-            }
+        removeAllergen(...allergenToRemove) {
+            for (const allergen of allergenToRemove) {
+                // Verificar si allergenToRemove es una instancia de la clase Allergen
+                if (!(allergen instanceof Allergen)) {
+                    throw new Error("El alérgeno no es un objeto Allergen.");
+                }
 
-            // Verificar si el alérgeno está registrado
-            if (!this.allergens.has(allergenToRemove)) {
-                throw new Error("El alérgeno no está registrado.");
-            }
+                // Verificar si el alérgeno está registrado
+                // if (!this.#allergens.includes(allergen)) {
+                //     throw new Error("El alérgeno no está registrado.");
+                // }
 
-            // Eliminar el alérgeno del sistema
-            this.allergens.delete(allergenToRemove);
+                let position = this.#allergens.findIndex((elemento) => elemento.name === allergen.name);
+
+                console.log(position);
+
+                // Eliminar el alergeno del sistema
+                this.#allergens.splice(position, 1);
+            }
 
             // Permitir encadenar llamadas
             return this;
@@ -470,19 +521,21 @@ let RestaurantsManager = (function () {
 
 
         // Método para añadir un plato
-        addDish(dishToAdd) {
-            // Verificar si dishToAdd es una instancia de la clase Dish
-            if (!(dishToAdd instanceof Dish)) {
-                throw new Error("El plato no es un objeto Dish.");
-            }
+        addDish(...dishToAdd) {
+            for (const dish of dishToAdd) {
+                // Verificar si dishToAdd es una instancia de la clase Dish
+                if (!(dish instanceof Dish)) {
+                    throw new Error("El plato no es un objeto Dish.");
+                }
 
-            // Verificar si el plato ya existe
-            if (this.dishes.has(dishToAdd)) {
-                throw new Error("El plato ya existe.");
-            }
+                // Verificar si el plato ya existe
+                // if (this.#dishes.includes(dish)) {
+                //     throw new Error("El plato ya existe.");
+                // }
 
-            // Añadir el plato al sistema
-            this.dishes.add(dishToAdd);
+                // Añadir el plato al sistema
+                this.#dishes.push(dish);
+            }
 
             // Permitir encadenar llamadas
             return this;
@@ -490,32 +543,38 @@ let RestaurantsManager = (function () {
 
 
         // Método para eliminar un plato
-        removeDish(dishToRemove) {
-            // Verificar si dishToRemove es una instancia de la clase Dish
-            if (!(dishToRemove instanceof Dish)) {
-                throw new Error("El plato no es un objeto Dish.");
+        removeDish(...dishToRemove) {
+            for (const dish of dishToRemove) {
+                // Verificar si dishToRemove es una instancia de la clase Dish
+                if (!(dish instanceof Dish)) {
+                    throw new Error("El plato no es un objeto Dish.");
+                }
+
+                // Verificar si el plato está registrado
+                // if (!this.#dishes.includes(dish)) {
+                //     throw new Error("El plato no está registrado.");
+                // }
+
+                let position = this.#dishes.findIndex((elemento) => elemento.name === dish.name);
+
+                console.log(position);
+
+                // Eliminar el plato del sistema
+                this.#dishes.splice(position, 1);
+
             }
-
-            // Verificar si el plato está registrado
-            if (!this.dishes.has(dishToRemove)) {
-                throw new Error("El plato no está registrado.");
-            }
-
-            // Eliminar el plato del sistema
-            this.dishes.delete(dishToRemove);
-
             // Desasignar plato de categorías, alérgenos y menús
-            dishToRemove.categories.forEach(category => {
-                category.dishes.delete(dishToRemove);
-            });
+            // dishToRemove.categories.forEach(category => {
+            //     category.#dishes.delete(dishToRemove);
+            // });
 
-            dishToRemove.allergens.forEach(allergen => {
-                allergen.dishes.delete(dishToRemove);
-            });
+            // dishToRemove.allergens.forEach(allergen => {
+            //     allergen.#dishes.delete(dishToRemove);
+            // });
 
-            dishToRemove.menus.forEach(menu => {
-                menu.dishes.delete(dishToRemove);
-            });
+            // dishToRemove.menus.forEach(menu => {
+            //     menu.#dishes.delete(dishToRemove);
+            // });
 
             // Permitir encadenar llamadas
             return this;
@@ -523,19 +582,21 @@ let RestaurantsManager = (function () {
 
 
         // Método para añadir un restaurante
-        addRestaurant(restaurantToAdd) {
-            // Verificar si restaurantToAdd es una instancia de la clase Restaurant
-            if (!(restaurantToAdd instanceof Restaurant)) {
-                throw new Error("El restaurante no es un objeto Restaurant.");
-            }
+        addRestaurant(...restaurantToAdd) {
+            for (const restaurant of restaurantToAdd) {
+                // Verificar si restaurantToAdd es una instancia de la clase Restaurant
+                if (!(restaurant instanceof Restaurant)) {
+                    throw new Error("El restaurante no es un objeto Restaurant.");
+                }
 
-            // Verificar si el restaurante ya existe
-            if (this.restaurants.has(restaurantToAdd)) {
-                throw new Error("El restaurante ya existe.");
-            }
+                // Verificar si el restaurante ya existe
+                // if (this.#restaurants.includes(restaurant)) {
+                //     throw new Error("El restaurante ya existe.");
+                // }
 
-            // Añadir el restaurante al sistema
-            this.restaurants.add(restaurantToAdd);
+                // Añadir el restaurante al sistema
+                this.#restaurants.push(restaurant);
+            }
 
             // Permitir encadenar llamadas
             return this;
@@ -543,20 +604,25 @@ let RestaurantsManager = (function () {
 
 
         // Método para eliminar un restaurante
-        removeRestaurant(restaurantToRemove) {
-            // Verificar si restaurantToRemove es una instancia de la clase Restaurant
-            if (!(restaurantToRemove instanceof Restaurant)) {
-                throw new Error("El restaurante no es un objeto Restaurant.");
+        removeRestaurant(...restaurantToRemove) {
+            for (const restaurant of restaurantToRemove) {
+                // Verificar si restaurantToRemove es una instancia de la clase Restaurant
+                if (!(restaurant instanceof Restaurant)) {
+                    throw new Error("El restaurante no es un objeto Restaurant.");
+                }
+
+                // Verificar si el restaurante está registrado
+                if (!this.restaurants.has(restaurant)) {
+                    throw new Error("El restaurante no está registrado.");
+                }
+
+                let position = this.#restaurants.findIndex((elemento) => elemento.name === restaurant.name);
+
+                console.log(position);
+
+                // Eliminar el restaurante del sistema
+                this.#restaurants.splice(position, 1);
             }
-
-            // Verificar si el restaurante está registrado
-            if (!this.restaurants.has(restaurantToRemove)) {
-                throw new Error("El restaurante no está registrado.");
-            }
-
-            // Eliminar el restaurante del sistema
-            this.restaurants.delete(restaurantToRemove);
-
             // Permitir encadenar llamadas
             return this;
         }
@@ -595,118 +661,118 @@ function testTask() {
         "URL_Spaghetti_Con_Tomate");
 
     // Crear un objeto de la clase Category
-    let categoria = new Category("Pasta", "Platos Tipicos");
+    let pasta = new Category("Pasta", "Platos Tipicos");
 
     // Crear un objeto de la clase Allergen
-    let alergeno = new Allergen("Gluten", "La pasta contiene gluten");
+    let gluten = new Allergen("Gluten", "La pasta contiene gluten");
 
     // Crear un objeto de la clase Menu
-    let menu = new Menu("Menu del Día", "Menu diario del restaurante");
-
-    // Crear un objeto de la clase Restaurant
-    let restaurante = new Restaurant("La cocina de Sergio", "Restaurante tradicional", "Avenida de los Reyes 46");
+    let menuDia = new Menu("Menu del Día", "Menu diario del restaurante");
 
     // Crear un objeto de la clase Coordinate
-    let coordenada = new Coordinate(40.7128, -74.0060);
+    let coordenadasSergio = new Coordinate(40.7128, -74.0060);
+
+    // Crear un objeto de la clase Restaurant
+    let cocinaDeSergio = new Restaurant("La cocina de Sergio", "Restaurante tradicional", coordenadasSergio);
 
 
     // Añadimos una categoría
     try {
         // Intentar añadir una nueva categoría
-        restaurantManager.addCategory(newCategory);
+        restaurantSergio.addCategory(pasta);
     } catch (error) {
         // Capturar y manejar la excepción
-        console.error("Error al añadir la categoría: " + error.message);
+        console.log("Error al añadir la categoría: " + error.message);
     }
 
 
     // Eliminamos la categoria 
     try {
         // Intentar eliminar una categoría
-        restaurantManager.removeCategory(categoryToRemove);
+        restaurantSergio.removeCategory(pasta);
     } catch (error) {
         // Capturar y manejar la excepción
-        console.error("Error al eliminar la categoría: " + error.message);
+        console.log("Error al eliminar la categoría: " + error);
     }
 
 
     // Añadimos un menu
     try {
         // Intentar añadir un menú
-        restaurantManager.addMenu(menuToAdd);
+        restaurantSergio.addMenu(menuDia);
     } catch (error) {
         // Capturar y manejar la excepción
-        console.error("Error al añadir el menú: " + error.message);
+        console.log("Error al añadir el menú: " + error.message);
     }
 
 
     // Eliminamos un menu
     try {
         // Intentar eliminar un menú
-        restaurantManager.removeMenu(menuToRemove);
+        restaurantSergio.removeMenu(menuDia);
     } catch (error) {
         // Capturar y manejar la excepción
-        console.error("Error al eliminar el menú: " + error.message);
+        console.log("Error al eliminar el menú: " + error.message);
     }
 
 
     // Añadimos alergenos
     try {
         // Intentar añadir un alérgeno
-        restaurantManager.addAllergen(allergenToAdd);
+        restaurantSergio.addAllergen(gluten);
     } catch (error) {
         // Capturar y manejar la excepción
-        console.error("Error al añadir el alérgeno: " + error.message);
+        console.log("Error al añadir el alérgeno: " + error.message);
     }
 
 
     // Eliminamos alergenos
     try {
         // Intentar eliminar un alérgeno
-        restaurantManager.removeAllergen(allergenToRemove);
+        restaurantSergio.removeAllergen(gluten);
     } catch (error) {
         // Capturar y manejar la excepción
-        console.error("Error al eliminar el alérgeno: " + error.message);
+        console.log("Error al eliminar el alérgeno: " + error.message);
     }
 
 
     // Añadimos un plato
     try {
         // Intentar añadir un plato
-        restaurantManager.addDish(dishToAdd);
+        restaurantSergio.addDish(spaghetti);
     } catch (error) {
         // Capturar y manejar la excepción
-        console.error("Error al añadir el plato: " + error.message);
+        console.log("Error al añadir el plato: " + error.message);
     }
 
 
     // Eliminamos un plato
     try {
         // Intentar eliminar un plato
-        restaurantManager.removeDish(dishToRemove);
+        restaurantSergio.removeDish(spaghetti);
     } catch (error) {
         // Capturar y manejar la excepción
-        console.error("Error al eliminar el plato: " + error.message);
+        console.log("Error al eliminar el plato: " + error.message);
     }
 
 
     // Añadimos un restaurante
     try {
         // Intentar añadir un restaurante
-        restaurantManager.addRestaurant(restaurantToAdd);
+        restaurantSergio.addRestaurant(cocinaDeSergio);
     } catch (error) {
         // Capturar y manejar la excepción
-        console.error("Error al añadir el restaurante: " + error.message);
+        console.log("Error al añadir el restaurante: " + error.message);
     }
 
 
     // Eliminamos restaurante
     try {
         // Intentar eliminar un restaurante
-        restaurantManager.removeRestaurant(restaurantToRemove);
+        restaurantSergio.removeRestaurant(cocinaDeSergio);
     } catch (error) {
         // Capturar y manejar la excepción
-        console.error("Error al eliminar el restaurante: " + error.message);
+        console.log("Error al eliminar el restaurante: " + error.message);
     }
 }
 

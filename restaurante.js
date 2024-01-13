@@ -378,7 +378,7 @@ let RestaurantsManager = (function () {
 
                 //Verifcar que la categoría no es null
                 if (category === null) {
-                    throw new Error("La categoría no es Nula.");
+                    throw new Error("La categoría es Null.");
                 }
 
                 // Sacamos la posición
@@ -390,7 +390,9 @@ let RestaurantsManager = (function () {
                 }
 
                 // Añadir la nueva categoría
-                this.#categories.push(category);
+                this.#categories.push(category, {
+                    dishes: [],
+                });
             }
 
             // Permitir encadenar llamadas
@@ -401,25 +403,14 @@ let RestaurantsManager = (function () {
         // Método para eliminar una categoría
         removeCategory(...categoriesToRemove) {
             for (const category of categoriesToRemove) {
-                // Verificar si categoryToRemove es una instancia de la clase Category
-                if (!(category instanceof Category)) {
-                    throw new Error("La categoría no es un objeto Category.");
+
+                // Sacamos la posición
+                let position = this.#categories.findIndex((elemento) => elemento.name === category.name)
+
+                // Verificar si la categoría ya existe
+                if (position === -1) {
+                    throw new Error("La categoría ya existe.");
                 }
-
-
-                // Verificar si la categoría está registrada
-                // if (!this.#categories.includes(categoryToRemove)) {
-                //     throw new Error("La categoría no está registrada.");
-                // }
-
-
-                // Desasignar platos de la categoría antes de eliminarla
-                // this.#dishes.forEach(dish => {
-                //     dish.#categories.delete(categoryToRemove);
-                // });
-
-
-                let position = this.#categories.findIndex((elemento) => elemento.name === category.name);
 
                 console.log(position);
 
@@ -427,8 +418,6 @@ let RestaurantsManager = (function () {
                 this.#categories.splice(position, 1);
 
             }
-            // Permitir encadenar llamadas
-            return this;
         }
 
 
@@ -442,7 +431,7 @@ let RestaurantsManager = (function () {
 
                 //Verifcar que los menus no son null
                 if (menu === null) {
-                    throw new Error("La categoría no es Nula.");
+                    throw new Error("El menu es null.");
                 }
 
                 // Sacamos la posición
@@ -450,11 +439,14 @@ let RestaurantsManager = (function () {
 
                 // Verificar si la categoría ya existe
                 if (position !== -1) {
-                    throw new Error("La categoría ya existe.");
+                    throw new Error("El menu ya existe.");
                 }
 
                 // Añadir el menú al sistema
-                this.#menus.push(menu);
+                this.#menus.push(menu, {
+                    dishes: [],
+                });
+
             }
 
 
@@ -467,26 +459,19 @@ let RestaurantsManager = (function () {
         removeMenu(...menuToRemove) {
             for (const menu of menuToRemove) {
 
-                // Verificar si menuToAdd es una instancia de la clase Menu
-                if (!(menu instanceof Menu)) {
-                    throw new Error("El menú no es un objeto Menu.");
+                // Sacamos la posición
+                let position = this.#menus.findIndex((elemento) => elemento.name === menu.name)
+
+                // Verificar si el menu esta registrado
+                if (position === -1) {
+                    throw new Error("El menu ya existe.");
                 }
-
-                // Verificar si el menú ya existe
-                // if (this.#menus.includes(menu)) {
-                //     throw new Error("El menú ya existe.");
-                // }
-
-                let position = this.#menus.findIndex((elemento) => elemento.name === menu.name);
 
                 console.log(position);
 
                 // Eliminar el menu del sistema
                 this.#categories.splice(position, 1);
             }
-
-            // Permitir encadenar llamadas
-            return this;
         }
 
 
@@ -500,7 +485,7 @@ let RestaurantsManager = (function () {
 
                 //Verifcar que el alergeno no es null
                 if (allergen === null) {
-                    throw new Error("La categoría no es Nula.");
+                    throw new Error("El alergeno es null.");
                 }
 
                 // Sacamos la posición
@@ -508,11 +493,13 @@ let RestaurantsManager = (function () {
 
                 // Verificar si la categoría ya existe
                 if (position !== -1) {
-                    throw new Error("La categoría ya existe.");
+                    throw new Error("El alergeno ya existe.");
                 }
 
                 // Añadir el alérgeno al sistema
-                this.#allergens.push(allergen);
+                this.#allergens.push(allergen, {
+                    dishes: [],
+                });
             }
             // Permitir encadenar llamadas
             return this;
@@ -522,26 +509,20 @@ let RestaurantsManager = (function () {
         // Método para eliminar un alérgeno
         removeAllergen(...allergenToRemove) {
             for (const allergen of allergenToRemove) {
-                // Verificar si allergenToRemove es una instancia de la clase Allergen
-                if (!(allergen instanceof Allergen)) {
-                    throw new Error("El alérgeno no es un objeto Allergen.");
-                }
 
-                // Verificar si el alérgeno está registrado
-                // if (!this.#allergens.includes(allergen)) {
-                //     throw new Error("El alérgeno no está registrado.");
-                // }
-
+                // Sacamos la posición
                 let position = this.#allergens.findIndex((elemento) => elemento.name === allergen.name);
+
+                // Verificar si el alergeno esta registrado
+                if (position === -1) {
+                    throw new Error("El alergeno no existe.");
+                }
 
                 console.log(position);
 
                 // Eliminar el alergeno del sistema
                 this.#allergens.splice(position, 1);
             }
-
-            // Permitir encadenar llamadas
-            return this;
         }
 
 
@@ -555,19 +536,22 @@ let RestaurantsManager = (function () {
 
                 //Verifcar que el plato no es null
                 if (dish === null) {
-                    throw new Error("La categoría no es Nula.");
+                    throw new Error("El plato es Null.");
                 }
 
                 // Sacamos la posición
-                let position = this.#dishes.findIndex((elemento) => elemento.name === dish.name)
+                let position = this.#dishes.findIndex((elemento) => elemento.name === dish.name);
 
-                // Verificar si la categoría ya existe
+                // Verificar si el plato ya existe
                 if (position !== -1) {
-                    throw new Error("La categoría ya existe.");
+                    throw new Error("El plato ya existe.");
                 }
 
                 // Añadir el plato al sistema
-                this.#dishes.push(dish);
+                this.#dishes.push(dish, {
+                    categories: [],
+                    allergens: [],
+                });
             }
 
             // Permitir encadenar llamadas
@@ -578,39 +562,34 @@ let RestaurantsManager = (function () {
         // Método para eliminar un plato
         removeDish(...dishToRemove) {
             for (const dish of dishToRemove) {
-                // Verificar si dishToRemove es una instancia de la clase Dish
-                if (!(dish instanceof Dish)) {
-                    throw new Error("El plato no es un objeto Dish.");
-                }
 
-                // Verificar si el plato está registrado
-                // if (!this.#dishes.includes(dish)) {
-                //     throw new Error("El plato no está registrado.");
-                // }
-
+                // Sacamos la posición
                 let position = this.#dishes.findIndex((elemento) => elemento.name === dish.name);
 
-                console.log(position);
+                // Verificar si el plato esta registrado
+                if (position === -1) {
+                    throw new Error("El plato no existe.");
+                }
+
+                console.log(this.#categories[1].dishes[0].name.name);
+
+                let prueb1 = this.#categories[1].dishes[0].name.name;
+
+                console.log(dish.name);
+
+                let prueb2 = dish.name;
+
+                console.log(prueb1 === prueb2);
+
+                // Elimina el plato de las asignaciones en categorías, alérgenos y menús
+                let posCat = this.#categories.findIndex((elemento) => elemento.dishes.name === dish.name);
+
+                console.log(posCat);
 
                 // Eliminar el plato del sistema
                 this.#dishes.splice(position, 1);
 
             }
-            // Desasignar plato de categorías, alérgenos y menús
-            // dishToRemove.categories.forEach(category => {
-            //     category.#dishes.delete(dishToRemove);
-            // });
-
-            // dishToRemove.allergens.forEach(allergen => {
-            //     allergen.#dishes.delete(dishToRemove);
-            // });
-
-            // dishToRemove.menus.forEach(menu => {
-            //     menu.#dishes.delete(dishToRemove);
-            // });
-
-            // Permitir encadenar llamadas
-            return this;
         }
 
 
@@ -624,7 +603,7 @@ let RestaurantsManager = (function () {
 
                 //Verifcar que el restaurante no es null
                 if (restaurant === null) {
-                    throw new Error("La categoría no es Nula.");
+                    throw new Error("La categoría es Nula.");
                 }
 
                 // Sacamos la posición
@@ -647,33 +626,68 @@ let RestaurantsManager = (function () {
         // Método para eliminar un restaurante
         removeRestaurant(...restaurantToRemove) {
             for (const restaurant of restaurantToRemove) {
-                // Verificar si restaurantToRemove es una instancia de la clase Restaurant
-                if (!(restaurant instanceof Restaurant)) {
-                    throw new Error("El restaurante no es un objeto Restaurant.");
-                }
 
-                // Verificar si el restaurante está registrado
-                // if (!this.restaurants.has(restaurant)) {
-                //     throw new Error("El restaurante no está registrado.");
-                // }
-
+                // Sacamos la posición
                 let position = this.#restaurants.findIndex((elemento) => elemento.name === restaurant.name);
+
+                // Verificar si el restaurante esta registrado
+                if (position === -1) {
+                    throw new Error("El restaurante no existe.");
+                }
 
                 console.log(position);
 
                 // Eliminar el restaurante del sistema
                 this.#restaurants.splice(position, 1);
             }
+        }
+
+        // Método para asignar un plato a una categoría
+        assignCategoryToDish(categoryName, dishName) {
+            // Verificar si Category es null
+            if (categoryName === null) {
+                throw new Error("La categoría es null.");
+            }
+
+            // Verificar si Dish es null
+            if (dishName === null) {
+                throw new Error("El plato es null.");
+            }
+
+            // Buscar la categoría en el sistema
+            let category = this.#categories.find((cat) => cat.name === categoryName);
+
+            // Si la categoría no existe, se añade al sistema
+            if (!category) {
+                category = { name: categoryName, dishes: [] };
+                this.#categories.push(category);
+            }
+
+            // Buscar el plato en el sistema
+            let dish = this.#dishes.find((d) => d.name === dishName);
+
+            console.log(category);
+
+            // Si el plato no existe, se añade al sistema
+            if (!dish) {
+                dish = { name: dishName, categories: [] };
+                this.#dishes.push(dish);
+            }
+
+            console.log(dish);
+
+            // Asignar el plato a la categoría
+            category.dishes.push(dish);
+            // Asignar la categoría al plato
+            dish.categories.push(category);
+
             // Permitir encadenar llamadas
             return this;
         }
     }
 
-
     function init() {
-        let rManager = new RestaurantsManager();
-        Object.freeze(rManager);
-        return rManager;
+        return new RestaurantsManager();
     }
 
     return {
@@ -684,7 +698,7 @@ let RestaurantsManager = (function () {
             return instantiated;
         },
     };
-}());
+})();
 
 
 // Funciones de testeo
@@ -727,13 +741,13 @@ function testTask() {
     }
 
 
-    // Eliminamos la categoria 
+    // Añadimos alergenos
     try {
-        // Intentar eliminar una categoría
-        restaurantSergio.removeCategory(pasta);
+        // Intentar añadir un alérgeno
+        restaurantSergio.addAllergen(gluten);
     } catch (error) {
         // Capturar y manejar la excepción
-        console.log("Error al eliminar la categoría: " + error);
+        console.log("Error al añadir el alérgeno: " + error.message);
     }
 
 
@@ -747,6 +761,47 @@ function testTask() {
     }
 
 
+    // Añadimos un plato
+    try {
+        // Intentar añadir un plato
+        restaurantSergio.addDish(spaghetti);
+    } catch (error) {
+        // Capturar y manejar la excepción
+        console.log("Error al añadir el plato: " + error.message);
+    }
+
+
+    // Añadimos un restaurante
+    try {
+        // Intentar añadir un restaurante
+        restaurantSergio.addRestaurant(cocinaDeSergio);
+    } catch (error) {
+        // Capturar y manejar la excepción
+        console.log("Error al añadir el restaurante: " + error.message);
+    }
+
+
+    try {
+        // Añadimos un plato a una categoría
+        restaurantSergio.assignCategoryToDish(pasta, spaghetti);
+    } catch (error) {
+        // Capturar y manejar la excepción
+        console.log("Error al enlazar categoria y plato: " + error.message);
+    }
+
+
+
+
+    // Eliminamos la categoria 
+    try {
+        // Intentar eliminar una categoría
+        // restaurantSergio.removeCategory(pasta);
+    } catch (error) {
+        // Capturar y manejar la excepción
+        console.log("Error al eliminar la categoría: " + error);
+    }
+
+
     // Eliminamos un menu
     try {
         // Intentar eliminar un menú
@@ -754,16 +809,6 @@ function testTask() {
     } catch (error) {
         // Capturar y manejar la excepción
         console.log("Error al eliminar el menú: " + error.message);
-    }
-
-
-    // Añadimos alergenos
-    try {
-        // Intentar añadir un alérgeno
-        restaurantSergio.addAllergen(gluten);
-    } catch (error) {
-        // Capturar y manejar la excepción
-        console.log("Error al añadir el alérgeno: " + error.message);
     }
 
 
@@ -777,16 +822,6 @@ function testTask() {
     }
 
 
-    // Añadimos un plato
-    try {
-        // Intentar añadir un plato
-        restaurantSergio.addDish(spaghetti);
-    } catch (error) {
-        // Capturar y manejar la excepción
-        console.log("Error al añadir el plato: " + error.message);
-    }
-
-
     // Eliminamos un plato
     try {
         // Intentar eliminar un plato
@@ -794,16 +829,6 @@ function testTask() {
     } catch (error) {
         // Capturar y manejar la excepción
         console.log("Error al eliminar el plato: " + error.message);
-    }
-
-
-    // Añadimos un restaurante
-    try {
-        // Intentar añadir un restaurante
-        restaurantSergio.addRestaurant(cocinaDeSergio);
-    } catch (error) {
-        // Capturar y manejar la excepción
-        console.log("Error al añadir el restaurante: " + error.message);
     }
 
 

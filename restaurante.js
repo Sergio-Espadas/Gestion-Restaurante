@@ -370,13 +370,22 @@ let RestaurantsManager = (function () {
         // Método para añadir una nueva categoría
         addCategory(...newCategory) {
             for (const category of newCategory) {
+
                 // Verificar si newCategory es una instancia de la clase Category
                 if (!(category instanceof Category)) {
                     throw new Error("La categoría no es un objeto Category.");
                 }
 
+                //Verifcar que la categoría no es null
+                if (category === null) {
+                    throw new Error("La categoría no es Nula.");
+                }
+
+                // Sacamos la posición
+                let position = this.#categories.findIndex((elemento) => elemento.name === category.name)
+
                 // Verificar si la categoría ya existe
-                if (this.#categories.includes(category)) {
+                if (position !== -1) {
                     throw new Error("La categoría ya existe.");
                 }
 
@@ -431,9 +440,17 @@ let RestaurantsManager = (function () {
                     throw new Error("El menú no es un objeto Menu.");
                 }
 
-                // Verificar si el menú ya existe
-                if (this.#menus.includes(menu)) {
-                    throw new Error("El menú ya existe.");
+                //Verifcar que los menus no son null
+                if (menu === null) {
+                    throw new Error("La categoría no es Nula.");
+                }
+
+                // Sacamos la posición
+                let position = this.#menus.findIndex((elemento) => elemento.name === menu.name)
+
+                // Verificar si la categoría ya existe
+                if (position !== -1) {
+                    throw new Error("La categoría ya existe.");
                 }
 
                 // Añadir el menú al sistema
@@ -481,10 +498,18 @@ let RestaurantsManager = (function () {
                     throw new Error("El alérgeno no es un objeto Allergen.");
                 }
 
-                // Verificar si el alérgeno ya existe
-                // if (this.#allergens.includes(allergen)) {
-                //     throw new Error("El alérgeno ya existe.");
-                // }
+                //Verifcar que el alergeno no es null
+                if (allergen === null) {
+                    throw new Error("La categoría no es Nula.");
+                }
+
+                // Sacamos la posición
+                let position = this.#allergens.findIndex((elemento) => elemento.name === allergen.name)
+
+                // Verificar si la categoría ya existe
+                if (position !== -1) {
+                    throw new Error("La categoría ya existe.");
+                }
 
                 // Añadir el alérgeno al sistema
                 this.#allergens.push(allergen);
@@ -528,10 +553,18 @@ let RestaurantsManager = (function () {
                     throw new Error("El plato no es un objeto Dish.");
                 }
 
-                // Verificar si el plato ya existe
-                // if (this.#dishes.includes(dish)) {
-                //     throw new Error("El plato ya existe.");
-                // }
+                //Verifcar que el plato no es null
+                if (dish === null) {
+                    throw new Error("La categoría no es Nula.");
+                }
+
+                // Sacamos la posición
+                let position = this.#dishes.findIndex((elemento) => elemento.name === dish.name)
+
+                // Verificar si la categoría ya existe
+                if (position !== -1) {
+                    throw new Error("La categoría ya existe.");
+                }
 
                 // Añadir el plato al sistema
                 this.#dishes.push(dish);
@@ -589,10 +622,18 @@ let RestaurantsManager = (function () {
                     throw new Error("El restaurante no es un objeto Restaurant.");
                 }
 
-                // Verificar si el restaurante ya existe
-                // if (this.#restaurants.includes(restaurant)) {
-                //     throw new Error("El restaurante ya existe.");
-                // }
+                //Verifcar que el restaurante no es null
+                if (restaurant === null) {
+                    throw new Error("La categoría no es Nula.");
+                }
+
+                // Sacamos la posición
+                let position = this.#restaurants.findIndex((elemento) => elemento.name === restaurant.name)
+
+                // Verificar si la categoría ya existe
+                if (position !== -1) {
+                    throw new Error("La categoría ya existe.");
+                }
 
                 // Añadir el restaurante al sistema
                 this.#restaurants.push(restaurant);
@@ -612,9 +653,9 @@ let RestaurantsManager = (function () {
                 }
 
                 // Verificar si el restaurante está registrado
-                if (!this.restaurants.has(restaurant)) {
-                    throw new Error("El restaurante no está registrado.");
-                }
+                // if (!this.restaurants.has(restaurant)) {
+                //     throw new Error("El restaurante no está registrado.");
+                // }
 
                 let position = this.#restaurants.findIndex((elemento) => elemento.name === restaurant.name);
 

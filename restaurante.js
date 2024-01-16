@@ -319,50 +319,87 @@ let RestaurantsManager = (function () {
         #restaurants = [];
 
 
+        #getDishPosition(dish) {
+            return this.#dishes.findIndex((elemento) => elemento.name === dish.name);
+        }
+
+
+        #getCategoryPosition(category) {
+            return this.#categories.findIndex((elemento) => elemento.name === category.name);
+        }
+
+
+        #getAllergenPosition(allergen) {
+            return this.#allergens.findIndex((elemento) => elemento.name === allergen.name);
+        }
+
+
+        #getMenuPosition(menu) {
+            return this.#menus.findIndex((elemento) => elemento.name === menu.name);
+        }
+
+
         // Getter para obtener un iterador de categorías
         getCategories() {
-            let categoryIterator = this.#categories.values();
-
+            const categories = this.#categories;
             return {
-                next: function () {
-                    return categoryIterator.next();
-                }
+                *[Symbol.iterator]() {
+                    for (const category of categories) {
+                        yield category;
+                    }
+                },
             };
         }
 
 
         // Getter para obtener un iterador de menús
         getMenus() {
-            let menuIterator = this.#menus.values();
-
+            const menuIterator = this.#menus;
             return {
-                next: function () {
-                    return menuIterator.next();
-                }
+                *[Symbol.iterator]() {
+                    for (const menu of menuIterator) {
+                        yield menu;
+                    }
+                },
             };
         }
 
 
         // Getter para obtener un iterador de alérgenos
         getAllergens() {
-            let allergenIterator = this.#allergens.values();
-
+            const allergenIterator = this.#allergens;
             return {
-                next: function () {
-                    return allergenIterator.next();
-                }
+                *[Symbol.iterator]() {
+                    for (const allergen of allergenIterator) {
+                        yield allergen;
+                    }
+                },
+            };
+        }
+
+
+        // Getter para obtener un iterador de alérgenos
+        getDishes() {
+            const dishIterator = this.#dishes;
+            return {
+                *[Symbol.iterator]() {
+                    for (const dish of dishIterator) {
+                        yield dish;
+                    }
+                },
             };
         }
 
 
         // Getter para obtener un iterador de restaurantes
         getRestaurants() {
-            let restaurantIterator = this.#restaurants.values();
-
+            const restaurantIterator = this.#restaurants;
             return {
-                next: function () {
-                    return restaurantIterator.next();
-                }
+                *[Symbol.iterator]() {
+                    for (const restaurant of restaurantIterator) {
+                        yield restaurant;
+                    }
+                },
             };
         }
 
@@ -560,37 +597,81 @@ let RestaurantsManager = (function () {
 
 
         // Método para eliminar un plato
-        removeDish(...dishToRemove) {
-            for (const dish of dishToRemove) {
-
-                // Sacamos la posición
-                let position = this.#dishes.findIndex((elemento) => elemento.name === dish.name);
-
-                // Verificar si el plato esta registrado
-                if (position === -1) {
-                    throw new Error("El plato no existe.");
+        //Elimina un plato y si también lo eliminara de categorias, alergenos y menus
+        removeDish(...dishes) {
+            for (const dish of dishes) {
+                if (!(dish instanceof Dish)) {
+                    throw new Error("El plato no es un objeto Dish.");
                 }
 
-                console.log(this.#categories[1].dishes[0].name.name);
+                //Buscamos  si el plato existe y si es asi lo eliminamos
+                let position = this.#getDishPosition(dish);
+                console.log(position);
+                if (position !== -1) {
+                    this.#dishes.splice(position, 1);
 
-                let prueb1 = this.#categories[1].dishes[0].name.name;
+                    // Buscamos en las categorias y si lo encontramos borramos el plato
+                    for (const category of this.#categories) {
+                        let categoryPosition = this.#getCategoryPosition(category);
+                        console.log(categoryPosition);
 
-                console.log(dish.name);
+                        let objCategory = this.#categories[categoryPosition];
 
-                let prueb2 = dish.name;
+                        // Verificar si objCategory es undefined antes de acceder a dishes
+                        if (objCategory && objCategory.dishes) {
+                            let dishIndex = objCategory.dishes.findIndex((busqueda) => busqueda.nombre === dish.nombre);
+                            console.log(dishIndex);
 
-                console.log(prueb1 === prueb2);
+                            if (dishIndex !== -1) {
+                                this.#categories[categoryPosition].dishes.splice(dishIndex, 1);
+                            }
+                        }
+                    }
 
-                // Elimina el plato de las asignaciones en categorías, alérgenos y menús
-                let posCat = this.#categories.findIndex((elemento) => elemento.dishes.name === dish.name);
 
-                console.log(posCat);
+                    // Buscamos en los alergenos y si lo encontramos borramos el plato
+                    for (const allergen of this.#allergens) {
+                        let allergenPosition = this.#getAllergenPosition(allergen);
+                        console.log(allergenPosition);
 
-                // Eliminar el plato del sistema
-                this.#dishes.splice(position, 1);
+                        let objAllergen = this.#allergens[allergenPosition];
 
+                        // Verificar si objAllergen es undefined antes de acceder a dishes
+                        if (objAllergen && objAllergen.dishes) {
+                            let dishIndex = objAllergen.dishes.findIndex((busqueda) => busqueda.nombre === dish.nombre);
+                            console.log(dishIndex);
+
+                            if (dishIndex !== -1) {
+                                this.#allergens[allergenPosition].dishes.splice(dishIndex, 1);
+                            }
+                        }
+                    }
+
+
+                    // Buscamos en los menus y si lo encontramos borramos el plato
+                    for (const menu of this.#menus) {
+                        let menuPosition = this.#getMenuPosition(menu);
+                        console.log(menuPosition);
+
+                        let objMenu = this.#menus[menuPosition];
+
+                        // Verificar si objAllergen es undefined antes de acceder a dishes
+                        if (objMenu && objMenu.dishes) {
+                            let dishIndex = objMenu.dishes.findIndex((busqueda) => busqueda.nombre === dish.nombre);
+                            console.log(dishIndex);
+
+                            if (dishIndex !== -1) {
+                                this.#menus[menuPosition].dishes.splice(dishIndex, 1);
+                            }
+                        }
+                    }
+
+                } else {
+                    throw new Error("Dish no existe en esta lista");
+                }
             }
         }
+
 
 
         // Método para añadir un restaurante
@@ -642,6 +723,7 @@ let RestaurantsManager = (function () {
             }
         }
 
+
         // Método para asignar un plato a una categoría
         assignCategoryToDish(categoryName, dishName) {
             // Verificar si Category es null
@@ -684,6 +766,248 @@ let RestaurantsManager = (function () {
             // Permitir encadenar llamadas
             return this;
         }
+
+
+        // Método para asignar un plato a una alegeria
+        assignAllergenToDish(allergenName, dishName) {
+            // Verificar si allergen es null
+            if (allergenName === null) {
+                throw new Error("El alergeno es null.");
+            }
+
+            // Verificar si Dish es null
+            if (dishName === null) {
+                throw new Error("El plato es null.");
+            }
+
+            // Buscar la categoría en el sistema
+            let allergen = this.#allergens.find((cat) => cat.name === allergenName);
+
+            // Si el alergeno no existe, se añade al sistema
+            if (!allergen) {
+                allergen = { name: allergenName, dishes: [] };
+                this.#allergens.push(allergen);
+            }
+
+            // Buscar el plato en el sistema
+            let dish = this.#dishes.find((d) => d.name === dishName);
+
+            // Si el plato no existe, se añade al sistema
+            if (!dish) {
+                dish = { name: dishName, allergen: [] };
+                this.#dishes.push(dish);
+            }
+
+            // Asignar el plato a la categoría
+            allergen.dishes.push(dish);
+            // Asignar la categoría al plato
+            dish.allergen = allergen;
+
+            // Permitir encadenar llamadas
+            return this;
+        }
+
+
+        // Método para asignar un plato a un menu
+        assignMenuToDish(menuName, dishName) {
+            // Verificar si allergen es null
+            if (menuName === null) {
+                throw new Error("El menu es null.");
+            }
+
+            // Verificar si Dish es null
+            if (dishName === null) {
+                throw new Error("El plato es null.");
+            }
+
+            // Buscar el menu en el sistema
+            let menu = this.#menus.find((cat) => cat.name === menuName);
+
+            // Si el menu no existe, se añade al sistema
+            if (!menu) {
+                menu = { name: menuName, dishes: [] };
+                this.#menus.push(menu);
+            }
+
+            // Buscar el plato en el sistema
+            let dish = this.#dishes.find((d) => d.name === dishName);
+
+            // Si el plato no existe, se añade al sistema
+            if (!dish) {
+                dish = { name: dishName, menu: [] };
+                this.#dishes.push(dish);
+            }
+
+            // Asignar el plato a la categoría
+            menu.dishes.push(dish);
+            // Asignar la categoría al plato
+            dish.menu = menu;
+
+            // Permitir encadenar llamadas
+            return this;
+        }
+
+
+        // Método para desasignar un plato de una categoría
+        deassignCategoryToDish(categoryName, dishName) {
+            // Verificar si Category es null
+            if (categoryName === null) {
+                throw new Error("La categoría es null.");
+            }
+
+            // Verificar si Dish es null
+            if (dishName === null) {
+                throw new Error("El plato es null.");
+            }
+
+            // Buscar la categoría en el sistema
+            let category = this.#categories.find((cat) => cat.name === categoryName);
+
+            // Verificar si la categoría no está registrada
+            if (!category) {
+                throw new Error("La categoría no está registrada.");
+            }
+
+            // Buscar el plato en el sistema
+            let dish = this.#dishes.find((d) => d.name === dishName);
+
+            // Verificar si el plato no está registrado
+            if (!dish) {
+                throw new Error("El plato no está registrado.");
+            }
+
+            // Desasignar el plato de la categoría
+            category.dishes = category.dishes.filter((d) => d !== dish);
+
+            // Desasignar la categoría del plato
+            dish.categories = dish.categories.filter((cat) => cat !== category);
+
+            // Permitir encadenar llamadas
+            return this;
+        }
+
+
+        // Método para desasignar un plato de un alergeno
+        deassignAllergenToDish(allergenName, dishName) {
+            // Verificar si allergen es null
+            if (allergenName === null) {
+                throw new Error("El alergeno es null.");
+            }
+
+            // Verificar si Dish es null
+            if (dishName === null) {
+                throw new Error("El plato es null.");
+            }
+
+            // Buscar el alergeno en el sistema
+            let allergen = this.#allergens.find((a) => a.name === allergenName);
+
+            // Verificar si el alergeno no está registrada
+            if (!allergen) {
+                throw new Error("El alergeno no está registrada.");
+            }
+
+            // Buscar el plato en el sistema
+            let dish = this.#dishes.find((d) => d.name === dishName);
+
+            // Verificar si el plato no está registrado
+            if (!dish) {
+                throw new Error("El plato no está registrado.");
+            }
+
+            // Desasignar el plato del alergeno
+            allergen.dishes = allergen.dishes.filter((d) => d !== dish);
+
+            // Permitir encadenar llamadas
+            return this;
+        }
+
+
+
+        // Método para desasignar un plato de un menu
+        deassignMenuToDish(menuName, dishName) {
+            // Verificar si menu es null
+            if (menuName === null) {
+                throw new Error("El menu es null.");
+            }
+
+            // Verificar si Dish es null
+            if (dishName === null) {
+                throw new Error("El plato es null.");
+            }
+
+            // Buscar el menu en el sistema
+            let menu = this.#menus.find((cat) => cat.name === menuName);
+
+            // Verificar si el menu no está registrada
+            if (!menu) {
+                throw new Error("El menu no está registrada.");
+            }
+            // Buscar el plato en el sistema
+            let dish = this.#dishes.find((d) => d.name === dishName);
+
+            // Verificar si el plato no está registrado
+            if (!dish) {
+                throw new Error("El plato no está registrado.");
+            }
+
+            // Desasignar el plato del menu
+            menu.dishes = menu.dishes.filter((d) => d !== dish);
+
+            // Permitir encadenar llamadas
+            return this;
+        }
+
+
+        // Método para intercambiar las posiciones de dos platos en un menú
+        changeDishesPositionsInMenu(menuName, dishName1, dishName2) {
+            // Verificar si Menu es null
+            if (menuName === null) {
+                throw new Error("El menú es null.");
+            }
+
+            // Buscar el menú en el sistema
+            let menu = this.#menus.find((m) => m.name === menuName);
+
+            // Verificar si el menú no está registrado
+            if (!menu) {
+                throw new Error("El menú no está registrado.");
+            }
+
+            // Verificar si Dish1 es null
+            if (dishName1 === null) {
+                throw new Error("El primer plato es null.");
+            }
+
+            // Verificar si Dish2 es null
+            if (dishName2 === null) {
+                throw new Error("El segundo plato es null.");
+            }
+
+            // Buscar los platos en el menú
+            let dish1 = menu.dishes.find((d) => d.name === dishName1);
+            let dish2 = menu.dishes.find((d) => d.name === dishName2);
+
+            // Verificar si los platos no están registrados en el menú
+            if (!dish1) {
+                throw new Error("El primer plato no está registrado en el menú.");
+            }
+
+            if (!dish2) {
+                throw new Error("El segundo plato no está registrado en el menú.");
+            }
+
+            // Intercambiar las posiciones de los platos en el menú
+            const index1 = menu.dishes.indexOf(dish1);
+            const index2 = menu.dishes.indexOf(dish2);
+
+            menu.dishes[index1] = dish2;
+            menu.dishes[index2] = dish1;
+
+            // Permitir encadenar llamadas
+            return this;
+        }
+
     }
 
     function init() {
@@ -790,12 +1114,140 @@ function testTask() {
     }
 
 
+    try {
+        // Añadimos un plato a una categoría
+        restaurantSergio.assignAllergenToDish(gluten, spaghetti);
+    } catch (error) {
+        // Capturar y manejar la excepción
+        console.log("Error al enlazar alergeno y plato: " + error.message);
+    }
+
+
+    try {
+        // Añadimos un plato a una categoría
+        restaurantSergio.assignMenuToDish(menuDia, spaghetti);
+    } catch (error) {
+        // Capturar y manejar la excepción
+        console.log("Error al enlazar menu y plato: " + error.message);
+    }
+
+
+    // Eliminamos un plato
+    try {
+        // Intentar eliminar un plato
+        restaurantSergio.removeDish(spaghetti);
+    } catch (error) {
+        // Capturar y manejar la excepción
+        console.log("Error al eliminar el plato: " + error.message);
+    }
+
+    // Comprobamos que desasigna plato de categoría
+    for (const category of restaurantSergio.getCategories()) {
+        console.log(category);
+    }
+
+    // Comprobamos que desasigna plato de alergenos
+    for (const allergen of restaurantSergio.getAllergens()) {
+        console.log(allergen);
+    }
+
+
+    // Comprobamos que desasigna plato de menu
+    for (const menu of restaurantSergio.getMenus()) {
+        console.log(menu);
+    }
+
+
+    // Comprobamos que desasigna plato de menu
+    for (const dish of restaurantSergio.getDishes()) {
+        console.log(dish);
+    }
+
+
+    try {
+        // Añadimos un plato a una categoría
+        restaurantSergio.assignCategoryToDish(pasta, spaghetti);
+    } catch (error) {
+        // Capturar y manejar la excepción
+        console.log("Error al enlazar categoria y plato: " + error.message);
+    }
+
+
+
+    // Probamos deassign category
+    try {
+        // Añadimos un plato a una categoría
+        restaurantSergio.assignCategoryToDish(pasta, spaghetti);
+    } catch (error) {
+        // Capturar y manejar la excepción
+        console.log("Error al enlazar menu y plato: " + error.message);
+    }
+
+    try {
+        // Desasignamos un plato a una categoría
+        restaurantSergio.deassignCategoryToDish(pasta, spaghetti);
+    } catch (error) {
+        // Capturar y manejar la excepción
+        console.log("Error al desenlazar categoria y plato: " + error.message);
+    }
+
+    // Comprobamos que desasigna plato de categoría
+    for (const category of restaurantSergio.getCategories()) {
+        console.log(category);
+    }
+
+
+
+    // Probamos deassign allergen
+    try {
+        // Añadimos un plato a un alergeno
+        restaurantSergio.assignAllergenToDish(gluten, spaghetti);
+    } catch (error) {
+        // Capturar y manejar la excepción
+        console.log("Error al enlazar alergeno y plato: " + error.message);
+    }
+
+    try {
+        // Desasignamos un plato a un alergeno
+        restaurantSergio.deassignAllergenToDish(gluten, spaghetti);
+    } catch (error) {
+        // Capturar y manejar la excepción
+        console.log("Error al desenlazar alergeno y plato: " + error.message);
+    }
+
+    // Comprobamos que desasigna plato de alergenos
+    for (const allergen of restaurantSergio.getAllergens()) {
+        console.log(allergen);
+    }
+
+
+    // Probamos deassign menu
+    try {
+        // Añadimos un plato a un menu
+        restaurantSergio.assignMenuToDish(menuDia, spaghetti);
+    } catch (error) {
+        // Capturar y manejar la excepción
+        console.log("Error al enlazar menu y plato: " + error.message);
+    }
+
+    try {
+        // Desasignamos un plato a un menu
+        restaurantSergio.deassignMenuToDish(menuDia, spaghetti);
+    } catch (error) {
+        // Capturar y manejar la excepción
+        console.log("Error al desenlazar menu y plato: " + error.message);
+    }
+
+    // Comprobamos que desasigna plato de menu
+    for (const menu of restaurantSergio.getMenus()) {
+        console.log(menu);
+    }
 
 
     // Eliminamos la categoria 
     try {
         // Intentar eliminar una categoría
-        // restaurantSergio.removeCategory(pasta);
+        restaurantSergio.removeCategory(pasta);
     } catch (error) {
         // Capturar y manejar la excepción
         console.log("Error al eliminar la categoría: " + error);
@@ -822,16 +1274,6 @@ function testTask() {
     }
 
 
-    // Eliminamos un plato
-    try {
-        // Intentar eliminar un plato
-        restaurantSergio.removeDish(spaghetti);
-    } catch (error) {
-        // Capturar y manejar la excepción
-        console.log("Error al eliminar el plato: " + error.message);
-    }
-
-
     // Eliminamos restaurante
     try {
         // Intentar eliminar un restaurante
@@ -840,6 +1282,112 @@ function testTask() {
         // Capturar y manejar la excepción
         console.log("Error al eliminar el restaurante: " + error.message);
     }
+
+
+
+    // Probamos la rehasignacion de argumentos en el menu
+
+    // Crear un objeto de la clase Dish
+    let macarrones = new Dish("macarrones", "macarrones con tomate",
+        ["macarrones", "Tomate"],
+        "URL_macarrones_Con_Tomate");
+
+    let pizza = new Dish("pizza", "pizza peperoni",
+        ["tomate", "queso", "peperoni"],
+        "URL_pizza_peperoni");
+
+    // Crear un objeto de la clase Category
+    let pasta_fresca = new Category("Pasta_Fresca", "Platos Tipicos");
+
+    // Crear un objeto de la clase Allergen
+    let glutamato = new Allergen("glutamato", "La pasta contiene gluten");
+
+    // Crear un objeto de la clase Menu
+    let menuPasta = new Menu("Menu de Pasta", "Menu diario del restaurante");
+
+
+    // Añadimos una categoría
+    try {
+        // Intentar añadir una nueva categoría
+        restaurantSergio.addCategory(pasta_fresca);
+    } catch (error) {
+        // Capturar y manejar la excepción
+        console.log("Error al añadir la categoría: " + error.message);
+    }
+
+
+    // Añadimos alergenos
+    try {
+        // Intentar añadir un alérgeno
+        restaurantSergio.addAllergen(glutamato);
+    } catch (error) {
+        // Capturar y manejar la excepción
+        console.log("Error al añadir el alérgeno: " + error.message);
+    }
+
+
+    // Añadimos un menu
+    try {
+        // Intentar añadir un menú
+        restaurantSergio.addMenu(menuPasta);
+    } catch (error) {
+        // Capturar y manejar la excepción
+        console.log("Error al añadir el menú: " + error.message);
+    }
+
+
+    // Añadimos un plato
+    try {
+        // Intentar añadir un plato
+        restaurantSergio.addDish(macarrones);
+    } catch (error) {
+        // Capturar y manejar la excepción
+        console.log("Error al añadir el plato: " + error.message);
+    }
+
+
+    // Añadimos un plato
+    try {
+        // Intentar añadir un plato
+        restaurantSergio.addDish(pizza);
+    } catch (error) {
+        // Capturar y manejar la excepción
+        console.log("Error al añadir el plato: " + error.message);
+    }
+
+    // Probamos assign menu
+    try {
+        // Añadimos un plato a un menu
+        restaurantSergio.assignMenuToDish(menuPasta, macarrones);
+    } catch (error) {
+        // Capturar y manejar la excepción
+        console.log("Error al enlazar menu y plato: " + error.message);
+    }
+
+
+    // Probamos assign menu
+    try {
+        // Añadimos un plato a un menu
+        restaurantSergio.assignMenuToDish(menuPasta, pizza);
+    } catch (error) {
+        // Capturar y manejar la excepción
+        console.log("Error al enlazar menu y plato: " + error.message);
+    }
+
+    // Probamos el cambio de posición en el menu
+    try {
+        // Añadimos un plato a un menu
+        restaurantSergio.changeDishesPositionsInMenu(menuPasta, macarrones, pizza)
+    } catch (error) {
+        // Capturar y manejar la excepción
+        console.log("Error al enlazar menu y plato: " + error.message);
+    }
+
+    // Comprobamos que desasigna plato de menu
+    for (const menu of restaurantSergio.getMenus()) {
+        console.log(menu);
+    }
+
 }
 
 testTask();
